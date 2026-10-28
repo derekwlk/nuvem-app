@@ -1,6 +1,13 @@
-# Welcome to your Expo app 👋
+# Nuvinha App ☁️
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicativo Expo/React Native da Nuvinha, com pet animado, conversa, jogos e loja.
+
+
+## Nuvinha Sky e carteira de moedas
+
+- O jogo é uma subida vertical até a Lua, sem plataformas, com aviões, pássaros, balões, asteroides e moedas. Os obstáculos aceleram gradualmente conforme a altitude.
+- A carteira é compartilhada entre **Cuidar**, **Jogos** e **Loja**. Cada moeda é registrada durante a partida, e os itens comprados ficam salvos e podem ser equipados.
+- Na web, o saldo é salvo no `localStorage`; no iOS/Android, em um arquivo no diretório privado do app. A carteira é local ao dispositivo/navegador — o cliente atual só consulta o pet na API e não possui uma rota conhecida para sincronizar alterações de moedas com o servidor Django.
 
 ## Get started
 
