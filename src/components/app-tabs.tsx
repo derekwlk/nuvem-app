@@ -38,6 +38,12 @@ export default function AppTabs() {
           tabBarIcon: ({ color, size }) => <Ionicons name="storefront" size={size} color={color} />,
         }}
       />
+      
+      {/* Rota escondida: abre ao tocar num jogo, mas não aparece na barra */}
+        <Tabs.Screen 
+      name="detalhe-jogo" 
+      options={{ href: null }} />
     </Tabs>
   );
+
 }

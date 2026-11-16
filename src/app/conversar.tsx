@@ -11,8 +11,8 @@ import NuvinhaPet from '@/components/NuvinhaPet';
 import BalaoMensagem from '@/components/BalaoMensagem';
 import DigitandoIndicador from '@/components/DigitandoIndicador';
 import { Mensagem } from '@/models/Mensagem';
-import { buscarPrimeiroPet } from '@/controllers/PetController';
-import { enviarCheckinHumor } from '@/controllers/CheckinController';
+import { buscarPetComCache } from '@/controllers/PetController';
+import { registrarCheckin } from '@/controllers/CheckinController';
 import {
   HUMORES, HumorPet, SAUDACAO, CONVITE_TEXTO, AVISO_PRIVACIDADE,
   novaMensagem, respostaAoHumor, agradecimento,
@@ -92,23 +92,20 @@ export default function TelaConversar() {
 
   // Envia o check-in ao backend (usa os controllers que já existiam)
   async function enviarCheckin() {
-    try {
-      const pet = await buscarPrimeiroPet();
-      if (!pet || !humorEscolhido) throw new Error('Sem pet ou sem humor');
-      await enviarCheckinHumor({
-        usuario_id: pet.usuario,
-        emoji: humorEscolhido,
-        texto_livre: ultimoTexto.current,
-      });
-      await nuvinhaFala([agradecimento(ultimoTexto.current !== '')]);
-      setEtapa('fim');
-    } catch (erro) {
-      console.log('Erro ao enviar check-in:', erro);
-      await nuvinhaFala(['Ops, não consegui guardar agora. Vamos tentar de novo?']);
-      setEtapa('erro');
-    }
-  }
+  try {
+    const { pet } = await buscarPetComCache();      // usa o cache se estiver offline
+    if (!pet || !humorEscolhido) throw new Error('Sem pet salvo ainda');
 
+    // grava no SQLite e sincroniza depois: NUNCA depende da internet
+    await registrarCheckin(pet.usuario, humorEscolhido, ultimoTexto.current);
+    await nuvinhaFala([agradecimento(ultimoTexto.current !== '')]);
+    setEtapa('fim');
+  } catch (erro) {
+    console.log('Erro ao registrar check-in:', erro);
+    await nuvinhaFala(['Preciso de internet pelo menos uma vez para te conhecer. Vamos tentar de novo?']);
+    setEtapa('erro');
+  }
+}
   return (
     <KeyboardAvoidingView
       style={styles.container}
