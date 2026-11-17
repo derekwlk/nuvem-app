@@ -1,14 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import TabPager from '@/components/TabPager';
 
-export default function TelaConversar() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.texto}>Tela Conversar (em construção)</Text>
-    </View>
-  );
+export default function JogosRoute() {
+  return <TabPager initialTab="jogos" />;
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  texto: { fontSize: 18, color: '#3D3050' },
-});
